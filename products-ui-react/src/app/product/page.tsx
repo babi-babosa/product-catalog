@@ -54,7 +54,7 @@ export function updateProductOnDB(payload, productId){
     })
 }
 
-export default function ProductInfo() {
+export default function Product() {
     const { productId } = useParams();
     const [productInfo, setProduct] = useState({})
     const [categories, setCategories] = useState([])
@@ -120,7 +120,7 @@ export default function ProductInfo() {
             });
     }
     return (
-        <div >
+        <>
             <MainHeader></MainHeader>
             <Card className={styles.cardClass}>
                 <Link to={"/"}>
@@ -187,6 +187,6 @@ export default function ProductInfo() {
                     </FormControl>
                 </CardContent>
             </Card>
-        </div>
+        </>
     );
 };

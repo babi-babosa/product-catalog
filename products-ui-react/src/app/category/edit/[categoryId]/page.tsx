@@ -6,16 +6,15 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
 import {useParams} from "react-router";
-import {Link, useNavigate} from "react-router-dom";
 import IconButton from "@mui/material/IconButton";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import MainHeader from "@/app/mainHeader";
-import styles from "./category.module.css";
-import {updateProductOnDB} from "@/app/product/page";
+import styles from "../../category.module.css";
 import Button from "@mui/material/Button";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
+import Link from 'next/link'
 
-export function getCategoryById(categoryId) {
+export function getCategoryById(categoryId :string) {
     // Fetch data from API
     return new Promise((resolve) => {
         resolve(fetch('http://localhost:8000/api/v1/categories/find?categoryId=' +categoryId)
@@ -23,7 +22,7 @@ export function getCategoryById(categoryId) {
     });
 }
 
-export function updateCategoryOnDB(payload, productId){
+export function updateCategoryOnDB(payload: any, productId: string){
     // Fetch data from API
     return new Promise((resolve) => {
         resolve(fetch('http://localhost:8000/api/v1/categories/' +productId, {
@@ -42,7 +41,6 @@ export default function CategoryUpdate() {
     const [category, setCategories] = useState({})
     const [title, setTitle] = useState("")
     const [description, setDescription] = useState("")
-    const history = useNavigate();
 
     useEffect(() => {
         getCategoryById(categoryId)
@@ -72,16 +70,13 @@ export default function CategoryUpdate() {
             }
         }
         updateCategoryOnDB(JSON.stringify(payload), categoryId)
-            .then((category) => {
-                history('/', {replace: true});
-            });
     }
 
     return (
         <div >
             <MainHeader></MainHeader>
             <Card className={styles.cardClass}>
-                <Link to={"/"}>
+                <Link href="/">
                     <IconButton size="large"><ArrowBackIosNewIcon /></IconButton>
                 </Link>
                 <CardHeader
