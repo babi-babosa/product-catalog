@@ -22,7 +22,7 @@ connect()
         app.use(express.urlencoded({ extended: true })); // Parse URL-encoded request bodies
 
         app.get('/', (req, res) => {
-            res.send('Hello, this is an health check for condition API');
+            res.send('Hello, this is an health check for products catalog API');
         });
 
         app.route('/api/v1/categories')
