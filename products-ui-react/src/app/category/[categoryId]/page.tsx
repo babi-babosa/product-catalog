@@ -6,11 +6,11 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
 import {useParams} from "react-router";
-import {Link, useNavigate} from "react-router-dom";
 import IconButton from "@mui/material/IconButton";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import MainHeader from "@/app/mainHeader";
-import styles from "./category.module.css";
+import styles from "../category.module.css";
+import Link from 'next/link';
 
 export function getCategoryById(categoryId) {
     // Fetch data from API
@@ -20,8 +20,8 @@ export function getCategoryById(categoryId) {
     });
 }
 
-export default function CategoryDetail() {
-    const { categoryId } = useParams();
+export default function CategoryDetail({ params }: { params: { categoryId: string } }) {
+    const categoryId  = params.categoryId;
     const [category, setCategories] = useState({})
 
     useEffect(() => {
@@ -35,7 +35,7 @@ export default function CategoryDetail() {
         <div >
             <MainHeader></MainHeader>
             <Card className={styles.cardClass}>
-                <Link to={"/"}>
+                <Link href="/">
                     <IconButton size="large"><ArrowBackIosNewIcon /></IconButton>
                 </Link>
                 <CardHeader

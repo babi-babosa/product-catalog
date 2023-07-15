@@ -5,7 +5,7 @@ import React, {Suspense, useEffect, useState, useCallback} from "react";
 import Products from "@/app/products"
 import SearchBar from "@/app/search/searchBar";
 
-export function searchProducts(inputText) {
+export function searchProducts(inputText: string) {
     // Fetch data from API
     return new Promise((resolve) => {
         resolve(fetch('http://localhost:8000/api/v1/products/filtering?inputText=' +inputText)
@@ -14,13 +14,13 @@ export function searchProducts(inputText) {
 }
 
 export default function Home() {
-    const [result, setState] = useState(undefined)
+    const [result, setResult] = useState([])
 
-    const handleClick = useCallback((inputText) => {
+    const handleClick = useCallback((inputText : string) => {
         searchProducts(inputText)
-            .then(result => {
-                setState(result)
-            })
+            .then((products) => {
+                setResult(products as any)
+            });
     }, []);
 
   return (

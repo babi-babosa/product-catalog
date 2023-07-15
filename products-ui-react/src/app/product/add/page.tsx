@@ -5,14 +5,13 @@ import {ButtonGroup, InputLabel, Select, FormControl, MenuItem, TextField} from 
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
-import {Link, useNavigate} from "react-router-dom";
+import Link from 'next/link';
 import IconButton from "@mui/material/IconButton";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import Button from "@mui/material/Button";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import MainHeader from "@/app/mainHeader";
 import styles from "@/app/products.module.css";
-import {color, fontFamily} from "@mui/system";
 
 export function insertProductOnDB(payload) {
     // Fetch data from API
@@ -52,7 +51,6 @@ export default function ProductCreate() {
     const [title, setTitle] = useState("")
     const [description, setDescription] = useState("")
     const [price, setPrice] = useState(0)
-    const history = useNavigate();
 
     useEffect(() => {
         getCategories()
@@ -92,14 +90,14 @@ export default function ProductCreate() {
         }
         insertProductOnDB(JSON.stringify(payload))
             .then((category) => {
-                history('/', {replace: true});
+                location.replace('/');
             });
     }
     return (
         <div>
             <MainHeader></MainHeader>
             <Card className={styles.cardClass}>
-                <Link to={"/"}>
+                <Link href="/">
                     <IconButton size="large"><ArrowBackIosNewIcon /></IconButton>
                 </Link>
                 <CardHeader

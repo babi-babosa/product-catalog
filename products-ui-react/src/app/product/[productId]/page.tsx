@@ -9,12 +9,11 @@ import CardContent from '@mui/material/CardContent';
 import {useParams} from "react-router";
 import CardHeader from "@mui/material/CardHeader";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
-import {insertProductOnDB} from "@/app/product/productAdd";
-import {Link, useNavigate} from "react-router-dom";
 import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 import MainHeader from "@/app/mainHeader";
 import styles from "@/app/products.module.css";
+import Link from 'next/link';
 
 export function getProductInfo(productId) {
     // Fetch data from API
@@ -54,8 +53,8 @@ export function updateProductOnDB(payload, productId){
     })
 }
 
-export default function ProductInfo() {
-    const { productId } = useParams();
+export default function Product({ params }: { params: { productId: string } }) {
+    const productId = params.productId;
     const [productInfo, setProduct] = useState({})
     const [categories, setCategories] = useState([])
     const [categoryName, setCategoryName] = useState("")
@@ -63,7 +62,6 @@ export default function ProductInfo() {
     const [title, setTitle] = useState(undefined)
     const [description, setDescription] = useState(undefined)
     const [price, setPrice] = useState(undefined)
-    const history = useNavigate();
 
     useEffect(() => {
         getProductInfo(productId)
@@ -116,14 +114,14 @@ export default function ProductInfo() {
         }
         updateProductOnDB(JSON.stringify(payload), productId)
             .then((category) => {
-                history('/', {replace: true});
+                location.replace('/');
             });
     }
     return (
-        <div >
+        <>
             <MainHeader></MainHeader>
             <Card className={styles.cardClass}>
-                <Link to={"/"}>
+                <Link href="/">
                     <IconButton size="large"><ArrowBackIosNewIcon /></IconButton>
                 </Link>
                 <CardHeader
@@ -187,6 +185,6 @@ export default function ProductInfo() {
                     </FormControl>
                 </CardContent>
             </Card>
-        </div>
+        </>
     );
 };

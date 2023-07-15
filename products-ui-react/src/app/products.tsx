@@ -9,18 +9,16 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
-import {ButtonGroup, Pagination, Stack} from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import VisibilityIcon from '@mui/icons-material/Visibility';
-import TablePagination from '@mui/material/TablePagination';
-import {useNavigate , Link, Navigate, Route, Routes, Outlet, Router } from 'react-router-dom'
+import Link from 'next/link';
 import styles from './products.module.css';
-import {green, grey, pink, red} from "@mui/material/colors";
-import SearchBar from "@/app/search/searchBar";
+import {red} from "@mui/material/colors";
 
 export function getProducts() {
+    console.log("tesyss")
     // Fetch data from API
     return new Promise((resolve) => {
         resolve(fetch('http://localhost:8000/api/v1/products')
@@ -28,7 +26,7 @@ export function getProducts() {
     })
 }
 
-export function deleteProduct(productId) {
+export function deleteProduct(productId: string) {
     // Fetch data from API
     return new Promise((resolve) => {
         resolve(fetch('http://localhost:8000/api/v1/products/' +productId , {
@@ -41,10 +39,10 @@ export function deleteProduct(productId) {
 export default function Products({ productsFiltered }) {
     const [products, setProducts] = useState([])
     const [productId, setProductId] = useState("")
-    const history = useNavigate();
 
     useEffect(() => {
-        if(!productsFiltered) {
+        console.log(productsFiltered);
+        if(productsFiltered.length === 0) {
             getProducts()
                 .then((allProducts:any) => {
                     setProducts(allProducts)
@@ -60,7 +58,7 @@ export default function Products({ productsFiltered }) {
     };
 
     const handleButtonClick = (productId) => {
-        history('/product/' +productId, {replace: true});
+        //history('/product/' +productId, {replace: true});
     };
 
     const deleteProductById = (productId) => {
@@ -105,15 +103,21 @@ export default function Products({ productsFiltered }) {
                                 <TableCell align="left">{row.price}</TableCell>
                                 <TableCell align="left">
                                     {row.category}
-                                    <Link to={"/category/" +row.categoryId}>
+                                    <Link href={{
+                                        pathname: "/category/" +row.categoryId,
+                                    }}>
                                         <IconButton size="large"><VisibilityIcon sx={{ color: "#0A369D" }}/></IconButton>
                                     </Link>
-                                    <Link to={"/category-edit/" +row.categoryId}>
+                                    <Link href={{
+                                        pathname: "/category/edit/" +row.categoryId,
+                                    }}>
                                         <IconButton size="large"><EditIcon sx={{ color: "#4472CA" }} /></IconButton>
                                     </Link>
                                 </TableCell>
                                 <TableCell align="left">
-                                    <Link to={"/product/" +row._id}>
+                                    <Link href={{
+                                        pathname: "/product/" +row._id,
+                                    }}>
                                         <IconButton size="large"><EditIcon sx={{ color: "#4472CA" }} /></IconButton>
                                     </Link>
                                     <IconButton size="large" onClick={() => { deleteProductById(row._id) }}><DeleteIcon sx={{ color: red[500] }}/></IconButton>
@@ -122,7 +126,7 @@ export default function Products({ productsFiltered }) {
                         ))}
                         <TableRow>
                             <TableCell align="center">
-                                <Link to={"/add-product"}>
+                                <Link href="/product/add" replace={true}>
                                     <Button
                                         style={{margin: "auto", width: "100%"}}
                                         startIcon={<AddCircleIcon />}
@@ -136,7 +140,6 @@ export default function Products({ productsFiltered }) {
                     </TableBody>
                 </Table>
             </TableContainer>
-            <Outlet></Outlet>
         </div>
     );
 };
