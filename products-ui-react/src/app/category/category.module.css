@@ -1,0 +1,32 @@
+.myClass {
+  min-height: 100vh;
+  margin: 30px;
+}
+
+.cardClass {
+  margin: 30px;
+}
+
+.informationContent {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.textValue,
+.mainLabelTitle {
+  font-family: "Roboto","Helvetica","Arial",sans-serif;
+}
+
+.mainLabelTitle {
+  font-size: 18px;
+  font-weight: bold;
+  text-transform: capitalize;
+  color: #0A369D;
+}
+
+.textValue {
+  font-size: 16px;
+  margin-left: 18px;
+  color: #4472CA;
+}

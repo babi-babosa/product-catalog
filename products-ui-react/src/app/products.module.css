@@ -1,0 +1,13 @@
+.myClass {
+  min-height: 100vh;
+  margin: 30px;
+}
+
+.cardClass {
+  margin: 30px;
+}
+
+.textValue {
+  font-family: "Roboto","Helvetica","Arial",sans-serif;
+  font-size: 14px;
+}

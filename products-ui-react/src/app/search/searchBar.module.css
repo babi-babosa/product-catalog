@@ -1,0 +1,26 @@
+.searchBar {
+    margin: 0;
+    padding: 30px;
+    background-color: #5E7CE2;
+    outline: 1px solid azure;
+    font-family: "Roboto","Helvetica","Arial",sans-serif;
+    color: #CFDEE7;
+    border-bottom: 1px solid;
+    box-shadow: 0px 3px 14px 4px rgba(207,222,231,1);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.searchFieldText {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+.textFieldSearch {
+    width: 250px;
+}
