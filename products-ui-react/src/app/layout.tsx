@@ -5,14 +5,14 @@ import {BrowserRouter, Route, Routes} from "react-router-dom";
 import Home from "@/app/page";
 
 export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
+children,
+ }: {
+  children: React.ReactNode;
 }) {
   return (
     <html lang="en">
     <body className="styles.bodyClass">
-      <Home />
+    <main>{children}</main>
     </body>
     </html>
   )

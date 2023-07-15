@@ -116,8 +116,7 @@ export default function Products({ productsFiltered }) {
                                 </TableCell>
                                 <TableCell align="left">
                                     <Link href={{
-                                        pathname: "/category/" +row._id,
-                                        query: { name: 'category-edit' },
+                                        pathname: "/product/" +row._id,
                                     }}>
                                         <IconButton size="large"><EditIcon sx={{ color: "#4472CA" }} /></IconButton>
                                     </Link>
@@ -127,7 +126,7 @@ export default function Products({ productsFiltered }) {
                         ))}
                         <TableRow>
                             <TableCell align="center">
-                                <Link href="/product" replace={true}>
+                                <Link href="/product/add" replace={true}>
                                     <Button
                                         style={{margin: "auto", width: "100%"}}
                                         startIcon={<AddCircleIcon />}

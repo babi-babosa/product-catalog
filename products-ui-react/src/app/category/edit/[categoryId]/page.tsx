@@ -1,11 +1,10 @@
 'use client'
-import {Suspense, useEffect, useState} from "react";
-import {ButtonGroup, InputLabel, Select, FormControl, MenuItem, TextField, Divider} from "@mui/material";
+import {useEffect, useState} from "react";
+import { FormControl, TextField, Divider} from "@mui/material";
 
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
-import {useParams} from "react-router";
 import IconButton from "@mui/material/IconButton";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import MainHeader from "@/app/mainHeader";
@@ -36,8 +35,8 @@ export function updateCategoryOnDB(payload: any, productId: string){
     })
 }
 
-export default function CategoryUpdate() {
-    const { categoryId } = useParams();
+export default function CategoryUpdate({ params }: { params: { categoryId: string } }) {
+    const categoryId = params.categoryId;
     const [category, setCategories] = useState({})
     const [title, setTitle] = useState("")
     const [description, setDescription] = useState("")
@@ -70,6 +69,10 @@ export default function CategoryUpdate() {
             }
         }
         updateCategoryOnDB(JSON.stringify(payload), categoryId)
+            .then(na => {
+                    location.replace('/');
+                }
+            )
     }
 
     return (

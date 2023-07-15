@@ -1,25 +1,28 @@
 'use client'
 import {Suspense, useEffect, useState} from "react";
-import Button from '@mui/material/Button';
 import {ButtonGroup, InputLabel, Select, FormControl, MenuItem, TextField} from "@mui/material";
-import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-import {useParams} from "react-router";
-import CardHeader from "@mui/material/CardHeader";
-import AddCircleIcon from "@mui/icons-material/AddCircle";
-import {insertProductOnDB} from "@/app/product/productAdd";
-import {Link, useNavigate} from "react-router-dom";
+import CardHeader from '@mui/material/CardHeader';
+import Link from 'next/link';
 import IconButton from "@mui/material/IconButton";
-import EditIcon from "@mui/icons-material/Edit";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
+import Button from "@mui/material/Button";
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import MainHeader from "@/app/mainHeader";
 import styles from "@/app/products.module.css";
 
-export function getProductInfo(productId) {
+export function insertProductOnDB(payload) {
     // Fetch data from API
     return new Promise((resolve) => {
-        resolve(fetch('http://localhost:8000/api/v1/products/' +productId)
+        resolve(fetch('http://localhost:8000/api/v1/products/', {
+            body: payload,
+            headers: {
+                "Content-Type": "application/json",
+            },
+            method: 'POST'
+        })
             .then((response) => response.json()))
     })
 }
@@ -40,46 +43,19 @@ export function getCategoryById(categoryId) {
     });
 }
 
-export function updateProductOnDB(payload, productId){
-    // Fetch data from API
-    return new Promise((resolve) => {
-        resolve(fetch('http://localhost:8000/api/v1/products/' +productId, {
-            body: payload,
-            headers: {
-                "Content-Type": "application/json",
-            },
-            method: 'PUT'
-        })
-            .then((response) => response.json()))
-    })
-}
-
-export default function Product() {
-    const { productId } = useParams();
+export default function ProductCreate() {
     const [productInfo, setProduct] = useState({})
     const [categories, setCategories] = useState([])
     const [categoryName, setCategoryName] = useState("")
-    const [categoryId, setCategoryId] = useState(undefined)
-    const [title, setTitle] = useState(undefined)
-    const [description, setDescription] = useState(undefined)
-    const [price, setPrice] = useState(undefined)
-    const history = useNavigate();
+    const [categoryId, setCategoryId] = useState("")
+    const [title, setTitle] = useState("")
+    const [description, setDescription] = useState("")
+    const [price, setPrice] = useState(0)
 
     useEffect(() => {
-        getProductInfo(productId)
-            .then((product:any) => {
-                setProduct(product);
-                setTitle(product.title);
-                setDescription(product.description);
-                setPrice(product.price);
-                getCategoryById(product.categoryId)
-                    .then((category) => {
-                        setCategoryName(category.title);
-                        getCategories()
-                            .then(categories => {
-                                setCategories(categories)
-                            })
-                    })
+        getCategories()
+            .then(categories => {
+                setCategories(categories)
             })
     }, [])
 
@@ -105,37 +81,37 @@ export default function Product() {
         }
     }
 
-    function updateProduct(e) {
+    function insertProduct(e) {
         const payload = {
-            updateFilters : {
-                title,
-                description,
-                price,
-                categoryId
-            }
+            title,
+            description,
+            price,
+            categoryId
         }
-        updateProductOnDB(JSON.stringify(payload), productId)
+        insertProductOnDB(JSON.stringify(payload))
             .then((category) => {
-                history('/', {replace: true});
+                location.replace('/');
             });
     }
     return (
-        <>
+        <div>
             <MainHeader></MainHeader>
             <Card className={styles.cardClass}>
-                <Link to={"/"}>
+                <Link href="/">
                     <IconButton size="large"><ArrowBackIosNewIcon /></IconButton>
                 </Link>
                 <CardHeader
-                    title={"Update Product - " +productInfo.title}
                     style={{color: "#5E7CE2"}}
+                    title="Insert a new product"
                 >
                 </CardHeader>
                 <CardContent>
-                    <FormControl sx={{ m: 1, minWidth: 300 }} fullWidth={true} margin="dense">
+                    <FormControl
+                        sx={{ m: 1, minWidth: 300 }} fullWidth={true} margin="dense"
+                    >
                         <TextField
                             id="title-product"
-                            placeholder={productInfo.title}
+                            label="Title"
                             variant="outlined"
                             type="text"
                             margin="dense"
@@ -143,7 +119,7 @@ export default function Product() {
                         />
                         <TextField
                             id="description-product"
-                            placeholder={productInfo.description}
+                            label="Description"
                             variant="outlined"
                             type="text"
                             margin="dense"
@@ -154,20 +130,22 @@ export default function Product() {
                             label="Price"
                             type="number"
                             variant="outlined"
-                            placeholder={productInfo.price}
                             InputLabelProps={{
                                 shrink: true,
                             }}
                             margin="dense"
                             onChange={handleChangeField}
                         />
+                        <p className={styles.textValue}>Category</p>
                         <Select
-                            labelId="select-category"
+                            labelId="demo-simple-select-label"
                             id="select-category"
-                            label="Insert a category"
+                            label=""
                             type="text"
                             onChange={handleChange}
+                            margin="dense"
                         >
+                            <InputLabel id="select-category" margin="dense">{categoryName}</InputLabel>
                             {categories && categories.map(category => (
                                 <MenuItem key={category._id}
                                           value={category._id}
@@ -180,13 +158,13 @@ export default function Product() {
                             style={{margin: "auto", width: "100%"}}
                             startIcon={<AddCircleIcon />}
                             type="submit"
-                            onClick = {updateProduct}
+                            onClick = {insertProduct}
                         >
-                            Update Product
+                            Add Product
                         </Button>
                     </FormControl>
                 </CardContent>
             </Card>
-        </>
+        </div>
     );
 };

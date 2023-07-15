@@ -9,7 +9,7 @@ import {useParams} from "react-router";
 import IconButton from "@mui/material/IconButton";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import MainHeader from "@/app/mainHeader";
-import styles from "../../category.module.css";
+import styles from "../category.module.css";
 import Link from 'next/link';
 
 export function getCategoryById(categoryId) {
@@ -20,8 +20,8 @@ export function getCategoryById(categoryId) {
     });
 }
 
-export default function CategoryDetail() {
-    const { categoryId } = useParams();
+export default function CategoryDetail({ params }: { params: { categoryId: string } }) {
+    const categoryId  = params.categoryId;
     const [category, setCategories] = useState({})
 
     useEffect(() => {
